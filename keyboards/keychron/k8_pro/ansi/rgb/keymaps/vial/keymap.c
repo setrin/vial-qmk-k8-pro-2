@@ -50,11 +50,15 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 };
 
-void rgb_matrix_indicators_user(void) {
+const uint8_t hue_increment = 30;
+RGB get_modified_rgb(uint8_t increment) {
     HSV hsv = rgb_matrix_get_hsv();
-    hsv.h += 20;
-    RGB rgb = hsv_to_rgb(hsv);
+    hsv.h += hue_increment;
+    return hsv_to_rgb(hsv);
+}
 
+void rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
+    RGB rgb = get_modified_rgb(hue_increment);
 
     // CAPS LOCK Indicator
     if (host_keyboard_led_state().caps_lock) {
@@ -63,33 +67,22 @@ void rgb_matrix_indicators_user(void) {
 
     // WIN_FN LEDS
     if (layer_state_is(WIN_FN)) {
-
-        // Bluetooth [ 1, 2, 3 ] - 0,198,255
-
-        rgb_matrix_set_color(17, rgb.r, rgb.g, rgb.b); 
-        rgb_matrix_set_color(18, rgb.r, rgb.g, rgb.b);
-        rgb_matrix_set_color(19, rgb.r, rgb.g, rgb.b);
+        rgb_matrix_set_color(17, rgb.r, rgb.g, rgb.b); // Bluetooth 1
+        rgb_matrix_set_color(18, rgb.r, rgb.g, rgb.b); // Bluetooth 2
+        rgb_matrix_set_color(19, rgb.r, rgb.g, rgb.b); // Bluetooth 3
+        rgb_matrix_set_color(68, rgb.r, rgb.g, rgb.b); // B key
 
     }
 
+    // NUM LOCK Indicator in NUMPAD layer and numpad highlight
     if (layer_state_is(NUMPAD)) {
         if (host_keyboard_led_state().num_lock) {
             rgb_matrix_set_color(12, RGB_GREEN);
         } else {
             rgb_matrix_set_color(12, RGB_RED);
         }
-    }
 
-}
-
-void rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
-    // if (get_highest_layer(layer_state) > 0) {
-    if (layer_state_is(NUMPAD)) {
         uint8_t layer = get_highest_layer(layer_state);
-        HSV hsv = rgb_matrix_get_hsv();
-        hsv.h += 20;
-        RGB rgb = hsv_to_rgb(hsv);
-
         for (uint8_t row = 0; row < MATRIX_ROWS; ++row) {
             for (uint8_t col = 0; col < MATRIX_COLS; ++col) {
                 uint8_t index = g_led_config.matrix_co[row][col];
