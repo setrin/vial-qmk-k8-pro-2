@@ -51,19 +51,24 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 
 void rgb_matrix_indicators_user(void) {
+    HSV hsv = rgb_matrix_get_hsv();
+    hsv.h += 20;
+    RGB rgb = hsv_to_rgb(hsv);
+
 
     // CAPS LOCK Indicator
     if (host_keyboard_led_state().caps_lock) {
-        rgb_matrix_set_color(50, 102,0,255);
+        rgb_matrix_set_color_all(rgb.r, rgb.g, rgb.b);
     }
 
     // WIN_FN LEDS
     if (layer_state_is(WIN_FN)) {
 
-        // Bluetooth [ 1, 2, 3 ]
-        rgb_matrix_set_color(17, 0,198,255); 
-        rgb_matrix_set_color(18, 0,198,255);
-        rgb_matrix_set_color(19, 0,198,255);
+        // Bluetooth [ 1, 2, 3 ] - 0,198,255
+
+        rgb_matrix_set_color(17, rgb.r, rgb.g, rgb.b); 
+        rgb_matrix_set_color(18, rgb.r, rgb.g, rgb.b);
+        rgb_matrix_set_color(19, rgb.r, rgb.g, rgb.b);
 
     }
 
@@ -78,8 +83,12 @@ void rgb_matrix_indicators_user(void) {
 }
 
 void rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
-    if (get_highest_layer(layer_state) > 0) {
+    // if (get_highest_layer(layer_state) > 0) {
+    if (layer_state_is(NUMPAD)) {
         uint8_t layer = get_highest_layer(layer_state);
+        HSV hsv = rgb_matrix_get_hsv();
+        hsv.h += 20;
+        RGB rgb = hsv_to_rgb(hsv);
 
         for (uint8_t row = 0; row < MATRIX_ROWS; ++row) {
             for (uint8_t col = 0; col < MATRIX_COLS; ++col) {
@@ -87,7 +96,7 @@ void rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
 
                 if (index >= led_min && index <= led_max && index != NO_LED &&
                 keymap_key_to_keycode(layer, (keypos_t){col,row}) > KC_TRNS) {
-                    rgb_matrix_set_color(index, 0,198,255);
+                    rgb_matrix_set_color(index, rgb.r, rgb.g, rgb.b);
                 }
             }
         }
