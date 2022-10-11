@@ -52,7 +52,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 void rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     const uint8_t hue_increment = 30;
-    RGB get_modified_rgb(uint8_t iH = 0, uint8_t iS = 0, uint8_t iB = 0) {
+    RGB get_modified_rgb(int iH = 0, int iS = 0, int iB = 0) {
         HSV hsv = rgb_matrix_get_hsv();
         hsv.h += iH;
         hsv.s += iS;
