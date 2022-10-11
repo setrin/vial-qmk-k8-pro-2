@@ -51,9 +51,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 
 const uint8_t hue_increment = 30;
-RGB get_modified_rgb(uint8_t increment) {
+RGB get_modified_rgb(uint8_t iH = 0, uint8_t iS = 0, uint8_t iB = 0) {
     HSV hsv = rgb_matrix_get_hsv();
-    hsv.h += hue_increment;
+    hsv.h += iH;
+    hsv.s += iS;
+    hsv.v += iB;
     return hsv_to_rgb(hsv);
 }
 
@@ -70,8 +72,38 @@ void rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         rgb_matrix_set_color(17, rgb.r, rgb.g, rgb.b); // Bluetooth 1
         rgb_matrix_set_color(18, rgb.r, rgb.g, rgb.b); // Bluetooth 2
         rgb_matrix_set_color(19, rgb.r, rgb.g, rgb.b); // Bluetooth 3
-        rgb_matrix_set_color(68, rgb.r, rgb.g, rgb.b); // B key
+        rgb_matrix_set_color(68, rgb.r, rgb.g, rgb.b); // "b" key
+        rgb_matrix_set_color(73, rgb.r, rgb.g, rgb.b); // "/" key
 
+        // RGB Mode
+        RGB mode1 = get_modified_rgb(30);
+        RGB mode2 = get_modified_rgb(30, 70);
+        rgb_matrix_set_color(34, mode1.r, mode1.g, mode1.b); // "q" key
+        rgb_matrix_set_color(51, mode2.r, mode2.g, mode2.b); // "a" key
+        
+        // Hue
+        RGB hue1 = get_modified_rgb(50);
+        RGB hue2 = get_modified_rgb(50, 70);
+        rgb_matrix_set_color(35, hue1.r, hue1.g, hue1.b); // "w" key
+        rgb_matrix_set_color(52, hue2.r, hue2.g, hue2.b); // "s" key
+        
+        // Sat
+        RGB sat1 = get_modified_rgb(70);
+        RGB sat2 = get_modified_rgb(70, 70);
+        rgb_matrix_set_color(36, sat1.r, sat1.g, sat1.b); // "e" key
+        rgb_matrix_set_color(53, sat2.r, sat2.g, sat2.b); // "d" key
+
+        // Bri
+        RGB bri1 = get_modified_rgb(90);
+        RGB bri2 = get_modified_rgb(90, 70);
+        rgb_matrix_set_color(37, bri1.r, bri1.g, bri1.b); // "r" key
+        rgb_matrix_set_color(54, bri2.r, bri2.g, bri2.b); // "f" key
+
+        // Speed
+        RGB speed1 = get_modified_rgb(120);
+        RGB speed2 = get_modified_rgb(120, 70);
+        rgb_matrix_set_color(38, speed1.r, speed1.g, speed1.b); // "t" key
+        rgb_matrix_set_color(55, speed2.r, speed2.g, speed2.b); // "g" key
     }
 
     // NUM LOCK Indicator in NUMPAD layer and numpad highlight
