@@ -16,7 +16,7 @@
 
 #include QMK_KEYBOARD_H
 
-enum layers { MAC_BASE, MAC_FN, WIN_BASE, WIN_FN};
+enum layers { MAC_BASE, MAC_FN, WIN_BASE, WIN_FN, NUMPAD};
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
