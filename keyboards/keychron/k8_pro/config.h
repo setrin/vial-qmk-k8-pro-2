@@ -17,6 +17,7 @@
 #pragma once
 
 /* USB Device descriptor parameter */
+#define VENDOR_ID 0x3434
 #define MANUFACTURER Keychron
 #define PRODUCT Keychron K8 Pro
 
